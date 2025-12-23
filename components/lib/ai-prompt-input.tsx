@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 import { Spinner } from '../ui/spinner'
 import { CornerDownLeftIcon } from 'lucide-react'
 
-const AIPromptInput = ({promptText,setPromptText,isLoading,SubmitBtn=false ,className,onSubmit }:PromptInputProps) => {
+const AIPromptInput = ({promptText,setPromptText,isLoading,SubmitBtn=true ,className,onSubmit }:PromptInputProps) => {
   return (
     <div className='bg-background'>
       <InputGroup className={cn('min-h-[170px] rounded-3xl bg-background', className)}>

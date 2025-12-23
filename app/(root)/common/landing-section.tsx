@@ -4,6 +4,7 @@ import AIPromptInput from '@/components/lib/ai-prompt-input'
 import Prism from '@/components/Prism'
 import { suggestions_list } from '@/utils/suggestion-list'
 import React, { useState } from 'react'
+import Header from './header'
 
 const LandingSection = () => {
     const [promptText, setPromptText] = useState('')
@@ -15,7 +16,7 @@ const LandingSection = () => {
   return (
     <div className="w-full min-h-screen">
         <div className="flex flex-col">
-            {/* <Header/> */}
+            <Header/>
 
             <div className="relative overflow-hidden pt-28">
                 <div className="max-w-7xl mx-auto flex flex-col items-center justify-center">
@@ -31,7 +32,7 @@ const LandingSection = () => {
                     <div className="flex w-full max-w-3xl flex-col relative item-center gap-8 z-10 pt-4">
                         <div className="w-full">
                             <AIPromptInput
-                                className='ring2 ring-primary rounded-3xl'
+                                className='ring-2 ring-primary/80 rounded-3xl'
                                 promptText={promptText}
                                 setPromptText={setPromptText}
                                 isLoading={isLoading}

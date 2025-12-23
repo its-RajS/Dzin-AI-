@@ -3,6 +3,7 @@ import { Jost } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/lib/theme-provider"
 import { Toaster } from "sonner";
+import {ClerkProvider} from '@clerk/nextjs'
 
 const jost = Jost({
   subsets: ["latin"],
@@ -21,20 +22,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${jost.variable} antialiased`}
-      >
-           <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${jost.variable} antialiased`}
           >
-            {children}
-            <Toaster richColors position="top-right" />
-          </ThemeProvider>
-      </body>
-    </html>
+             <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+              >
+              {children}
+              <Toaster richColors position="top-right" />
+            </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
