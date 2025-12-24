@@ -2,9 +2,9 @@
 import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion'
 import AIPromptInput from '@/components/lib/ai-prompt-input'
 import Prism from '@/components/Prism'
-import { suggestions_list } from '@/utils/suggestion-list'
 import React, { useState } from 'react'
 import Header from './header'
+import { suggestions_list } from '@/packages/utils/suggestion-list'
 
 const LandingSection = () => {
     const [promptText, setPromptText] = useState('')

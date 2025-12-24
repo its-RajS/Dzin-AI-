@@ -1,4 +1,4 @@
-export const suggestions_list = [
+ export const suggestions_list = [
     {
       label: "Finance Tracker",
       icon: "💸",
