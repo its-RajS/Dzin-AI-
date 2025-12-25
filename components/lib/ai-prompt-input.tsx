@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from '../ui/input-group'
-import { cn } from '@/lib/utils'
+import { cn } from '@/packages/utils/lib/utils'
 import { Spinner } from '../ui/spinner'
 import { CornerDownLeftIcon } from 'lucide-react'
 import { PromptInputProps } from '@/packages/utils/types/prompt-input'
