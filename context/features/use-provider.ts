@@ -9,8 +9,8 @@ export const useCreateProject = ()=>{
     const router  = useRouter() 
 
     return useMutation({
-        mutationFn : async (prompt: any)=>{
-            const response = await axios.post('/api/project', prompt)
+        mutationFn : async (prompt: string)=>{
+            const response = await axios.post('/api/project', { prompt })
             return response.data
         },
         onSuccess : (data)=>{
