@@ -5,10 +5,24 @@ import Prism from '@/components/Prism'
 import React, { useState } from 'react'
 import Header from './header'
 import { suggestions_list } from '@/packages/utils/suggestion-list'
+import { useCreateProject } from '@/context/features/use-provider'
 
 const LandingSection = () => {
     const [promptText, setPromptText] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+
+    const {mutateAsync : createProject,} = useCreateProject()
+
+    const handleCreateProject = async () => {
+        try {
+            setIsLoading(true)
+            await createProject(promptText)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     const handleSuggestionClick = (suggestion: string) => {
         setPromptText(suggestion)
@@ -36,7 +50,7 @@ const LandingSection = () => {
                                 promptText={promptText}
                                 setPromptText={setPromptText}
                                 isLoading={isLoading}
-                                onSubmit={()=>{}}
+                                onSubmit={handleCreateProject}
                             />
                         </div>
                         {/* //! Suggestion area */}
@@ -80,19 +94,6 @@ const LandingSection = () => {
                             rounded-[50%] bg-background"
                         ></div>
                     </div>
-                    {/* <div className='absolute top-0 -z-10 size-full mask-[linear-gradient(to_bottom,white_30%,transparent_80%)]' >
-                        <Prism
-                            animationType="hover"
-                            timeScale={0.5}
-                            height={3.5}
-                            baseWidth={5.5}
-                            scale={3.6}
-                            hueShift={0}
-                            colorFrequency={1}
-                            noise={0.5}
-                            glow={1}
-                        />
-                    </div> */}
                 </div> 
             </div>
             <div className="w-full py-10">

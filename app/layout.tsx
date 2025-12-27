@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/lib/theme-provider"
 import { Toaster } from "sonner";
 import {ClerkProvider} from '@clerk/nextjs'
+import {QueryProvider} from '@/context/query-provider'
 
 const jost = Jost({
   subsets: ["latin"],
@@ -27,15 +28,17 @@ export default function RootLayout({
         <body
           className={`${jost.variable} antialiased`}
           >
-             <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-              >
-              {children}
-              <Toaster richColors position="top-right" />
-            </ThemeProvider>
+            <QueryProvider>
+                <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+                >
+                {children}
+                <Toaster richColors position="top-right" />
+              </ThemeProvider>
+            </QueryProvider>
         </body>
       </html>
     </ClerkProvider>
