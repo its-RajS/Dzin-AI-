@@ -1,9 +1,10 @@
 "use client"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
+//? To create a new project(mutation)
 export const useCreateProject = ()=>{
 
     const router  = useRouter() 
@@ -20,5 +21,16 @@ export const useCreateProject = ()=>{
             console.log("Project failed", error)
             toast.error("Failed to create project")
         }   
+    })
+}
+
+//? To get recent projects(query)
+export const useGetRecentProjects = ()=>{
+    return useQuery({
+        queryKey : ['projects'],
+        queryFn : async ()=>{
+            const response = await axios.get('/api/project')
+            return response.data
+        },
     })
 }

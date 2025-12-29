@@ -5,13 +5,19 @@ import Prism from '@/components/Prism'
 import React, { useState } from 'react'
 import Header from './header'
 import { suggestions_list } from '@/packages/utils/suggestion-list'
-import { useCreateProject } from '@/context/features/use-provider'
+import { useCreateProject, useGetRecentProjects } from '@/context/features/use-provider'
+import { useUser } from '@clerk/nextjs'
+import { Spinner } from '@/components/ui/spinner'
+import { ProjectProps } from '@/packages/utils/types/project'
+import { ProjectCard } from '@/components/lib/project-card'
 
 const LandingSection = () => {
+    const user = useUser()
     const [promptText, setPromptText] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
-    const {mutateAsync : createProject,} = useCreateProject()
+    const {data : recentProjects, isLoading : recentProjectsLoading, isError : recentProjectsError} = useGetRecentProjects()
+    const {mutateAsync : createProject} = useCreateProject()
 
     const handleCreateProject = async () => {
         try {
@@ -98,11 +104,31 @@ const LandingSection = () => {
             </div>
             <div className="w-full py-10">
                 <div className="max-w-3xl mx-auto">
+                    {user?.user?.id && (    
                     <div>
                         <h1 className="text-xl font-semibold tracking-tight">
                             Recent Projects
                         </h1>
+                        {recentProjectsLoading ? (
+                            <div className="flex items-center justify-center py-2">
+                                <Spinner className="size-10" />
+                            </div>
+                        ) : (
+                            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-3'>
+                                {recentProjects?.data?.length && (
+                                        recentProjects?.data?.map((project: ProjectProps) => (
+                                            <ProjectCard key={project.id} project={project} />
+                                        ))
+                                )}
+                            </div>
+                        )}
                     </div>
+                    )}
+                    {recentProjectsError && (
+                        <p className="text-center text-red-500 py-2">
+                            Failed to load recent projects
+                        </p>
+                    )}
                 </div>
             </div>
         </div>  
