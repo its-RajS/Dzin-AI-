@@ -9,7 +9,8 @@ export async function GET(
   try {
     const { id } = await params;
     const user = await currentUser();
-    if (!user) throw new Error("Unauthorized");
+    if (!user)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     const userId = user.id;
 
     const project = await prisma.project.findUnique({
