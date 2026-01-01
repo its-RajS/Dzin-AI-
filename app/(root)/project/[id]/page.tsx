@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import React from "react";
 import Header from "./common/header";
 import Canvas from "@/components/canvas";
+import CanvasProvider from "@/context/canvas-provider";
 
 const Page = () => {
   const params = useParams();
@@ -17,7 +18,7 @@ const Page = () => {
   } = useGetProjectById(id);
 
   const frames = project?.frames || [];
-  const theme = project?.theme || "";
+  const themeID = project?.theme || "";
 
   const hasInitialFrame = frames.length > 0;
 
@@ -30,7 +31,7 @@ const Page = () => {
 
       <CanvasProvider
         initialFrames={frames}
-        initialTheme={theme}
+        initialThemeID={themeID}
         hasInitialFrame={hasInitialFrame}
         projectId={project?.id || ""}
       >
