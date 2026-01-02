@@ -35,9 +35,13 @@ const Page = () => {
         hasInitialFrame={hasInitialFrame}
         projectId={project?.id || ""}
       >
-        <div className="flex overflow-hidden w-full">
-          <div className="relative">
-            <Canvas />
+        <div className="flex overflow-hidden flex-1">
+          <div className="relative flex-1">
+            <Canvas
+              projectId={project?.id || ""}
+              projectName={project?.name || ""}
+              isPending={projectLoading}
+            />
           </div>
         </div>
       </CanvasProvider>

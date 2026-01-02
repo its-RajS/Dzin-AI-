@@ -18,7 +18,7 @@ export interface CanvasContextProps {
   loadingStatus: LoadingStatusProp;
 }
 
-type LoadingStatusProp =
+export type LoadingStatusProp =
   | "idle"
   | "running"
   | "analyzing"
