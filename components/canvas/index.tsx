@@ -1,3 +1,5 @@
+ "use client"
+
 import { useCanvasContext } from "@/context/canvas-provider";
 import React, { useState } from "react";
 import { CanvasLoader } from "./canvas-loader";
@@ -5,6 +7,7 @@ import { cn } from "@/packages/utils/lib/utils";
 import FloatingToolBar from "./canvas-floating-toolbar";
 import { TOOL_HAND_ENUM, ToolModeType } from "@/constants/canvas";
 import {TransformWrapper, TransformComponent} from "react-zoom-pan-pinch"
+import CanvasControl from "./canvas-control";
 
 const Canvas = ({
   projectId,
@@ -30,7 +33,8 @@ const Canvas = ({
   
   return ( 
     <>
-      <div className="relative h-full w-full overflow-hidden">
+      {/* Outer wrapper with dark background and rounded corners */}
+      <div className="relative h-full w-full overflow-hidden bg-[#1f1f1f] rounded-3xl p-4">
         <FloatingToolBar />
 
         {/* Status Loader */}
@@ -62,47 +66,55 @@ const Canvas = ({
           disabled: toolMode !== TOOL_HAND_ENUM.HAND
         }}
         >
-          {({zoomIn, zoomOut}) => (
+          {({ zoomIn, zoomOut }) => {
+            const handleZoomIn = () => zoomIn(0.1)
+            const handleZoomOut = () => zoomOut(0.1)
+
+            return (
             <>
+              {/* Canvas background with dotted grid */}
               <div
                 className={cn(
-                  `absolute inset-0 w-full h-full p-3 bg-[#eee] dark:bg-[#242423] z-0`,
-                  toolMode === TOOL_HAND_ENUM.HAND ? "cursor-grab active:cursor-grabbing" : "cursor-default"
+                  "absolute inset-0 w-full h-full p-3 bg-white dark:bg-[#191919] z-0 rounded-2xl",
+                  toolMode === TOOL_HAND_ENUM.HAND
+                    ? "cursor-grab active:cursor-grabbing"
+                    : "cursor-default"
                 )}
                 style={{
                   backgroundImage:
-                  "radial-gradient(circle, var(--primary)) 1px, transparent 1px",
+                    "radial-gradient(circle, rgba(0,0,0,0.75) 1px, transparent 1px)",
                   backgroundSize: "20px 20px",
+                  backgroundPosition: "10px 10px",
                 }}
-                >
+              >
                   <TransformComponent
                   wrapperStyle={{
                     width: "100%",
                     height: "100%",
-                    overflow: "unset",
-                    backgroundColor: "green "
+                    overflow: "unset"
                   }}
-
+                  
                   contentStyle={{
                     width: "100%",
-                    height: "100%"
+                    height: "100%",
+                    backgroundColor: "green"
                   }}
                   >
-                    <div>Box</div>
+                    <div className="w-50 h-50 bg-blue-500">Box</div>
                   </TransformComponent>
               </div>
               <CanvasControl
-                zoomIn={zoomIn}
-                zoomOut={zoomOut}
+                zoomIn={handleZoomIn}
+                zoomOut={handleZoomOut}
                 zoomPercent={zoomPercent}
                 toolMode={toolMode}
                 setToolMode={setToolMode}
               />
             </>
-          )} 
+            )
+          }} 
   
         </TransformWrapper>
-        {/* Canvas */}
 
       </div>
     </>
