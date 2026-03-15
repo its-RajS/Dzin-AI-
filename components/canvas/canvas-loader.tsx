@@ -20,8 +20,8 @@ export function CanvasLoader({
         status === "finalizing" && "bg-green-500 text-white"
       )}
     >
-      <Spinner className="w-4 h-4 stroke-3!" />
-      <span className="text-sm font-semibold capitalize">
+      <Spinner className="w-6 h-6 stroke-3!" />
+      <span className="text-lg font-semibold capitalize">
         {status === "fetching" ? "Loading Project" : status}
       </span>
     </div>
