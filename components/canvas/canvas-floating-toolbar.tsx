@@ -3,19 +3,20 @@
 import { useCanvasContext } from "@/context/canvas-provider"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Button } from "../ui/button"
-import { ChevronDown, Palette, Wand2 } from "lucide-react"
+import { CameraIcon, ChevronDown, Palette, Save, Wand2 } from "lucide-react"
 import { useState } from "react"
 import AIPromptInput from "../lib/ai-prompt-input"
 import { parseThemeColors } from "@/packages/database/lib/canvas-theme"
 import { cn } from "@/packages/utils/lib/utils"
 import ThemeSelector from "./themeselector"
+import { Separator } from "../ui/separator"
 
 const FloatingToolBar = () => {
     const {theme: currentTheme, themes, setTheme } = useCanvasContext()
     const [promptText, setPromptText] = useState<string>("")
 
   return (
-    <div className="fixed top-6 left-1/2 -translate-x-1/2 ">
+    <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20">
         <div className="w-full max-w-2xl bg-background dark:bg-gray-900 rounded-full border shadow-xl ">
             <div className="flex flex-row items-center gap-2 px-3 ">
                 <Popover>
@@ -80,6 +81,27 @@ const FloatingToolBar = () => {
                         <ThemeSelector/>
                     </PopoverContent>
                 </Popover>
+
+                <Separator className="h-4!" orientation="vertical" />
+                
+                <div className="flex items-center gap-2 ">
+                    <Button
+                     className="rounded-full cursor-pointer"
+                     variant="outline"
+                     size="icon-sm"
+                    >
+                        <CameraIcon className="size-4" />
+                    </Button>
+                    <Button
+                     className="rounded-full cursor-pointer"
+                     variant="default"
+                     size="sm"
+                    >
+                        <Save className="size-4" />
+                        Save
+                    </Button>
+                </div>
+
             </div>
         </div> 
     </div>
