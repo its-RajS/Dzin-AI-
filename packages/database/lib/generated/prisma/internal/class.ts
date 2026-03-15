@@ -23,7 +23,7 @@ const config: runtime.GetPrismaClientConfig = {
       "value": "prisma-client"
     },
     "output": {
-      "value": "C:\\projects\\Personal\\mobile_ai_sass\\packages\\database\\lib\\generated\\prisma",
+      "value": "/home/its-raj/Projects/Main/Dzin-AI-/packages/database/lib/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -32,12 +32,16 @@ const config: runtime.GetPrismaClientConfig = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\projects\\Personal\\mobile_ai_sass\\packages\\database\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/its-raj/Projects/Main/Dzin-AI-/packages/database/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativePath": "../../../prisma",
@@ -47,16 +51,17 @@ const config: runtime.GetPrismaClientConfig = {
     "db"
   ],
   "activeProvider": "mongodb",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": "DATABASE_URL",
+        "fromEnvVar": "DATABASE_URI",
         "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../lib/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Project {\n  id        String   @id @default(auto()) @map(\"_id\") @db.ObjectId\n  userId    String\n  name      String\n  theme     String?\n  thumbnail String?\n  frames    Frame[]\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Frame {\n  id          String   @id @default(auto()) @map(\"_id\") @db.ObjectId\n  projectId   String   @db.ObjectId\n  project     Project  @relation(fields: [projectId], references: [id])\n  title       String\n  htmlContent String\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n}\n",
-  "inlineSchemaHash": "b5f834e9d2f2e97d18644cca41c806c8263e29baa161ed7349b538a389585b1c",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client\"\n  output        = \"../lib/generated/prisma\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URI\")\n}\n\nmodel Project {\n  id        String   @id @default(auto()) @map(\"_id\") @db.ObjectId\n  userId    String\n  name      String\n  theme     String?\n  thumbnail String?\n  frames    Frame[]\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Frame {\n  id          String   @id @default(auto()) @map(\"_id\") @db.ObjectId\n  projectId   String   @db.ObjectId\n  project     Project  @relation(fields: [projectId], references: [id])\n  title       String\n  htmlContent String\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n}\n",
+  "inlineSchemaHash": "877fc4311087aafa214c15b0d3e355aa5d43629b0eb85ac6d5db1368c23b53b7",
   "copyEngine": true,
   "runtimeDataModel": {
     "models": {},

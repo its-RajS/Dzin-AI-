@@ -52,7 +52,7 @@ const CanvasProvider = ({
     }
   }, [initialThemeID]);
 
-  //? Update loagind with inngest realtime effect
+  //? Update loading with inngest realtime effect
 
   const addFrame = useCallback((frame: FrameProps) => {
     setFrames((prevFrames) => [...prevFrames, frame]);

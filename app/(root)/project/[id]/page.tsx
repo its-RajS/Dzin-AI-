@@ -12,7 +12,7 @@ const Page = () => {
   const id = (params?.id as string) || "";
 
   const {
-    data: project,
+    data: project, 
     isLoading: projectLoading,
     isError: projectError,
   } = useGetProjectById(id);
