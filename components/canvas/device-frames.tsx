@@ -1,6 +1,7 @@
 import { TOOL_HAND_ENUM, ToolModeType } from '@/constants/canvas'
 import { useCanvasContext } from '@/context/canvas-provider'
 import { getHTMLWrapper } from '@/packages/database/lib/html-wrapper'
+import { cn } from '@/packages/utils/lib/utils'
 import React, { useRef, useState } from 'react'
 import {Rnd} from "react-rnd"
 
@@ -18,7 +19,7 @@ type DeviceFrameProps = {
     theme_style?: string
 }
 
-const DeeviceFrame = ({
+const DeviceFrame = ({
     html = 'html',
     frameId,
     title = "Utitled",
@@ -84,8 +85,24 @@ const DeeviceFrame = ({
             height: parseInt(ref.style.height)
         })
     }}
+    className={
+        cn("relative z-10",
+            iseSelected && tool_mode !== TOOL_HAND_ENUM.HAND && "ring-3 ring-blue-400 ring-offset-1 ",
+            tool_mode === TOOL_HAND_ENUM.HAND ? "cursor-grab! active:cursor-grabbing " : "cursor-move"
+        )
+    }
     >
+        <div className="w-full h-full">
+            {/* <FrameToolBar/> */}
 
+            <div className={
+                cn(`relative w-full h-auto shadow-sm rounded-[36px] overflow-hidden `,
+                    iseSelected && tool_mode !== TOOL_HAND_ENUM.HAND && "rounded-none"
+                )
+            }>
+
+            </div>
+        </div>
     </Rnd>
   ) 
 }
@@ -94,4 +111,4 @@ const Handle = () => (
     <div className='z-30 h-4 w-4 bg-white border-2 border-blue-500'/>
 )
  
-export default DeeviceFrame
+export default DeviceFrame
