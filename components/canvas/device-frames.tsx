@@ -97,15 +97,30 @@ const DeviceFrame = ({
 
             <div className={
                 cn(`relative w-full h-auto shadow-sm rounded-[36px] overflow-hidden `,
-                    iseSelected && tool_mode !== TOOL_HAND_ENUM.HAND && "rounded-none"
+                    iseSelected && tool_mode !== TOOL_HAND_ENUM.HAND && "rounded-none "
                 )
             }>
-
+                <iframe
+                    ref={iFrame}
+                    srcDoc={fullHTMl}
+                    title={title}
+                    sandbox="allow-scripts allow-same-origin"
+                    style={{
+                        width:"100%",
+                        minHeight: `${minHeight}px`, 
+                        height: `${frameSize.height}px`,
+                        border: "none",
+                        pointerEvents: "none", 
+                        display: "block",
+                        background: "white"
+                    }}
+                />
+                
             </div>
         </div>
     </Rnd>
   ) 
-}
+}   
 
 const Handle = () => (
     <div className='z-30 h-4 w-4 bg-white border-2 border-blue-500'/>
