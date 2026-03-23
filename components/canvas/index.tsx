@@ -10,6 +10,7 @@ import {TransformWrapper, TransformComponent} from "react-zoom-pan-pinch"
 import CanvasControl from "./canvas-control";
 import DeviceFrame from "./device-frames";
 import DeviceFrameSkeleton from "./device-frame-skeleton";
+import HTMLDialog from "./html-dialog";
 
 const DEMO_HTML = `<!DOCTYPE html>
 <html lang="en">
@@ -425,6 +426,11 @@ const Canvas = ({
   )
   const [zoomPercent, setZoomPercent] = useState<number>(53)
   const [currentScale, setCurrentScale] = useState<number>(0.53)
+  const [onOpenHTMLDialog, setOnOpenHTMLDialog] = useState(false)
+
+  const openHTMlDialog = () => {
+    setOnOpenHTMLDialog(true)
+  }
   
   return ( 
     <>
@@ -522,6 +528,7 @@ const Canvas = ({
                             tool_mode={toolMode}
                             theme_style={theme?.style}
                             scale={currentScale}
+                            openHTMlDialog={openHTMlDialog}
                           />
                         )
                       })}
@@ -535,6 +542,7 @@ const Canvas = ({
                             tool_mode={toolMode}
                             theme_style={theme?.style}
                             scale={currentScale}
+                            openHTMlDialog={openHTMlDialog}
                           />
                     </div>
                   </TransformComponent>
@@ -551,8 +559,14 @@ const Canvas = ({
           }} 
   
         </TransformWrapper>
-
       </div>
+      <HTMLDialog
+        title={selectedFrame?.title}
+        html={selectedFrame?.htmlContent || DEMO_HTML}
+        theme_style={theme?.style || ""}
+        open={onOpenHTMLDialog}
+        onOpenChange={setOnOpenHTMLDialog}
+      />
     </>
   );
 };

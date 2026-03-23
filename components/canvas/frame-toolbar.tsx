@@ -15,7 +15,7 @@ type FrameToolBarProps = {
     onOpenHTMLDialog: ()=>void
 }
 
-const FrameToolBar = ({title, iseSelected, isDownloading, disabled, scale = 1.5, onDownloadPng, onOpenHTMLDialog}: FrameToolBarProps) => {
+const FrameToolBar = ({title, iseSelected, isDownloading, disabled, scale = 1.5 , onDownloadPng, onOpenHTMLDialog}: FrameToolBarProps) => {
   return (
     <div className={
         cn(`absolute flex items-center gap-2 rounded-full z-50`,

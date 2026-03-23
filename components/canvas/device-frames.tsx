@@ -2,7 +2,7 @@ import { TOOL_HAND_ENUM, ToolModeType } from '@/constants/canvas'
 import { useCanvasContext } from '@/context/canvas-provider'
 import { getHTMLWrapper } from '@/packages/database/lib/html-wrapper'
 import { cn } from '@/packages/utils/lib/utils'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {Rnd} from "react-rnd"
 import FrameToolBar from './frame-toolbar'
 
@@ -17,21 +17,23 @@ type DeviceFrameProps = {
     },
     scale?: number,
     tool_mode: ToolModeType,
-    theme_style?: string
+    theme_style?: string,
+    openHTMlDialog: ()=>void
 }
 
 const DeviceFrame = ({
     html = 'html',
     frameId,
     title = "Utitled",
-    width = 420,
-    minHeight = 800,
+    width = 450,
+    minHeight = 1000,
     initialPostion = {
         x: 0, y: 0
     },
     scale = 1,
     tool_mode,
-    theme_style
+    theme_style,
+    openHTMlDialog
 }: DeviceFrameProps) => {
     const {selectedFrameId, setSelectedFrameId} = useCanvasContext()
     const [frameSize, setFrameSize] = useState({
@@ -47,11 +49,26 @@ const DeviceFrame = ({
         theme_style
     )
 
+    //* To get the height based on the content
+    useEffect(() => {
+      const handleHeight = (event: MessageEvent)=>{
+        if(event.data.type === "FRAME_HEIGHT" && event.data.frameId === frameId){
+            setFrameSize((prev)=>({
+                ...prev,
+                height: event.data.height
+            }))
+        }
+      }
+      window.addEventListener("message", handleHeight)
+      return ()=> window.removeEventListener('message', handleHeight)
+    }, [frameId])
+    
+
   return (
     <Rnd
     default={{
         x: 0,
-        y:0,
+        y:0, 
         width: width,
         height: frameSize.height
     }}
@@ -100,7 +117,7 @@ const DeviceFrame = ({
             isDownloading={false}
             disabled={false}
             onDownloadPng={()=>{}}
-            onOpenHTMLDialog={()=>{}}
+            onOpenHTMLDialog={openHTMlDialog}
             />
 
             <div className={
