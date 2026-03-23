@@ -4,6 +4,7 @@ import { getHTMLWrapper } from '@/packages/database/lib/html-wrapper'
 import { cn } from '@/packages/utils/lib/utils'
 import React, { useRef, useState } from 'react'
 import {Rnd} from "react-rnd"
+import FrameToolBar from './frame-toolbar'
 
 type DeviceFrameProps = {
     html : string,
@@ -93,7 +94,14 @@ const DeviceFrame = ({
     }
     >
         <div className="w-full h-full">
-            {/* <FrameToolBar/> */}
+            <FrameToolBar
+            title={title}
+            iseSelected={iseSelected && tool_mode !== TOOL_HAND_ENUM.HAND}
+            isDownloading={false}
+            disabled={false}
+            onDownloadPng={()=>{}}
+            onOpenHTMLDialog={()=>{}}
+            />
 
             <div className={
                 cn(`relative w-full h-auto shadow-sm rounded-[36px] overflow-hidden `,
