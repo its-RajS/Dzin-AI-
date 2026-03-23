@@ -25,8 +25,8 @@ const DeviceFrame = ({
     html = 'html',
     frameId,
     title = "Utitled",
-    width = 450,
-    minHeight = 1000,
+    width = 430,
+    minHeight = 800,
     initialPostion = {
         x: 0, y: 0
     },
@@ -45,8 +45,8 @@ const DeviceFrame = ({
     const fullHTMl = getHTMLWrapper(
         html,
         title,
-        frameId,
-        theme_style
+        theme_style,
+        frameId
     )
 
     //* To get the height based on the content
@@ -126,6 +126,7 @@ const DeviceFrame = ({
                 )
             }>
                 <iframe
+                    key={`${frameId}-${theme_style || ""}`}
                     ref={iFrame}
                     srcDoc={fullHTMl}
                     title={title}

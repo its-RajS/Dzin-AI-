@@ -29,7 +29,7 @@ export function getHTMLWrapper(
   <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
 
 
-  <style type="text/tailwindcss">
+  <style type="text/css">
     :root {${BASE_VARIABLES}${finalTheme}}
     *, *::before, *::after {margin:0;padding:0;box-sizing:border-box;}
     html, body {width:100%;min-height:100%;}
@@ -43,6 +43,8 @@ export function getHTMLWrapper(
   <div id="root">
   <div class="relative">
     ${html}
+    <!-- Re-apply theme vars after the provided HTML so template/local :root styles can't override theme selection -->
+    <style type="text/css">:root {${BASE_VARIABLES}${finalTheme}}</style>
   </div>
   <script>
     (()=>{
