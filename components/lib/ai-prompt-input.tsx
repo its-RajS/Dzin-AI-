@@ -6,7 +6,7 @@ import { Spinner } from '../ui/spinner'
 import { CornerDownLeftIcon } from 'lucide-react'
 import { PromptInputProps } from '@/packages/utils/types/prompt-input'
 
-const AIPromptInput = ({promptText,setPromptText,isLoading,SubmitBtn=true ,className,onSubmit }:PromptInputProps) => {
+const AIPromptInput = ({ promptText, setPromptText, isLoading, SubmitBtn = true, className, onSubmit }: PromptInputProps) => {
   return (
     <div className='bg-background'>
       <InputGroup className={cn('min-h-[170px] rounded-3xl bg-background', className)}>
@@ -14,23 +14,23 @@ const AIPromptInput = ({promptText,setPromptText,isLoading,SubmitBtn=true ,class
           className='text-base! py-2.5!'
           placeholder='I want to design an app that is...'
           value={promptText}
-          onChange={(e)=>setPromptText(e.target.value)}
+          onChange={(e) => setPromptText(e.target.value)}
         />
         <InputGroupAddon align="block-end" className='flex items-center justify-end'>
           {SubmitBtn && (
-            <InputGroupButton 
-            className=''
-            variant='default'
-            size='sm'
-            disabled={!promptText?.trim() || isLoading}
-            onClick={()=>onSubmit?.()}
+            <InputGroupButton
+              className=''
+              variant='default'
+              size='sm'
+              disabled={!promptText?.trim() || isLoading}
+              onClick={() => onSubmit?.()}
 
             >
               {isLoading ? (
-                <Spinner/>  
+                <Spinner />
               ) : (
                 <>
-                  Design 
+                  Design
                   <CornerDownLeftIcon className='size-4' />
                 </>
               )}
