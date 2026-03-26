@@ -1,5 +1,10 @@
+import { generateText, Output } from "ai";
 import { inngest } from "../client";
 import { z } from "zod";
+import { openrouter } from "@openrouter/ai-sdk-provider";
+import { FrameProps } from "@/packages/utils/types/project";
+import { ANALYSIS_PROMPT } from "@/packages/database/lib/prompt";
+import { prisma } from "@/packages/database/lib/prisma";
 
 const analysisSchema = z.object({
     theme: z.string().describe("The specific visual theme ID. (eg., 'glassmorphism', 'neumorphism', 'minimalist', 'dark mode', etc.)"),
@@ -23,9 +28,49 @@ export const generateUIScreen = inngest.createFunction(
 
         const isRegenerating = frames?.length > 0;
 
+        // ! Analyze the prompt
         const analysis = await step.run("analyze-prompt", async () => {
 
+            const contextHTML = frames.slice(0, 4)?.map((frame: FrameProps) => frame.htmlContent).join("\n")
+
+            //? check if it is regenerated
+            const analysisPrompt = isRegenerating ?
+                `
+                USER_REQUEST: ${prompt},
+                SELECTED_THEME: ${existingTheme},   
+                CONTEXT_HTML: ${contextHTML}
+            `.trim()
+                :
+                `
+                USER_REQUEST: ${prompt},
+            `.trim()
+
+
+            const { output } = await generateText({
+                model: openrouter.chat("google/gemini-2.5-flash-lite"),
+                output: Output.object({
+                    schema: analysisSchema,
+                }),
+                system: ANALYSIS_PROMPT,
+                prompt: analysisPrompt,
+            })
+
+            const themeToUse = isRegenerating ? existingTheme : output.theme;
+
+            //* Update the theme in the project schema
+            if (!isRegenerating)
+                await prisma.project.update({
+                    where: {
+                        id: projectId,
+                        userId: userId
+                    },
+                    data: { theme: themeToUse },
+                })
+
+            return { ...output, themeToUse }
         });
 
+
+
     },
-); 
+);   
