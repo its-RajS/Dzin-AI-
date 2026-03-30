@@ -6,6 +6,7 @@ import { FrameProps } from "@/packages/utils/types/project";
 import { ANALYSIS_PROMPT, GENERATION_SYSTEM_PROMPT } from "@/packages/database/lib/prompt";
 import { prisma } from "@/packages/database/lib/prisma";
 import { BASE_VARIABLES, THEME_LIST } from "@/packages/database/lib/canvas-theme";
+import { unsplashTool } from "../tool";
 
 const analysisSchema = z.object({
     theme: z.string().describe("The specific visual theme ID. (eg., 'glassmorphism', 'neumorphism', 'minimalist', 'dark mode', etc.)"),
@@ -27,12 +28,12 @@ export const generateUIScreen = inngest.createFunction(
     async ({ event, step }) => {
         const { userId, projectId, prompt, frames, theme: existingTheme } = event.data;
 
-        const isRegenerating = frames?.length > 0;
+        const isRegenerating = Array.isArray(frames) && frames?.length > 0;
 
         // ! Analyze the prompt
         const analysis = await step.run("analyze-prompt", async () => {
 
-            const contextHTML = frames.slice(0, 4)?.map((frame: FrameProps) => frame.htmlContent).join("\n")
+            const contextHTML = isRegenerating ? frames.slice(0, 4)?.map((frame: FrameProps) => frame.htmlContent).join("\n") : " "
 
             //? check if it is regenerated
             const analysisPrompt = isRegenerating ?
@@ -75,11 +76,11 @@ export const generateUIScreen = inngest.createFunction(
         for (let i = 0; i < analysis.screens.length; i++) {
             const screen = analysis.screens[i];
             const selectedTheme = THEME_LIST.find((theme) => theme.id === analysis.themeToUse);
-            if (!selectedTheme) throw new Error("Theme not found");
+            const themeStyle = selectedTheme ? selectedTheme.style : THEME_LIST[0].style;
 
             //* Combine theme style and base variable
             const fullTheme = `
-            ${selectedTheme.style || ""}
+            ${themeStyle || ""}
             ${BASE_VARIABLES}
             `
 
@@ -87,7 +88,9 @@ export const generateUIScreen = inngest.createFunction(
                 const result = await generateText({
                     model: openrouter.chat("google/gemini-2.5-flash-lite"),
                     system: GENERATION_SYSTEM_PROMPT,
-                    tools: {},
+                    tools: {
+                        searchUnsplash: unsplashTool
+                    },
                     stopWhen: stepCountIs(5),
                     prompt: `
                     - Screen ${i + 1}/${analysis.screens.length}

@@ -1,4 +1,5 @@
 import { generateProjectName } from "@/app/action/action";
+import { inngest } from "@/inngest/client";
 import { prisma } from "@/packages/database/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
@@ -47,7 +48,7 @@ export async function POST(request: Request) {
 
     const userId = user.id;
 
-    const projectName = await generateProjectName(prompt);
+    const projectName = await generateProjectName(prompt); //? AI project name 
 
     const project = await prisma.project.create({
       data: {
@@ -55,6 +56,21 @@ export async function POST(request: Request) {
         name: projectName,
       },
     });
+
+    //? Inngest trigger
+    try {
+      await inngest.send({
+        name: "ui/generate.screen",
+
+        data: {
+          userId: userId,
+          projectId: project.id,
+          prompt,
+        },
+      });
+    } catch (error) {
+      console.log(error)
+    }
 
     return NextResponse.json({ success: true, data: project });
   } catch (error) {

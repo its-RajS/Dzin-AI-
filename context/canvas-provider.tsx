@@ -30,7 +30,7 @@ const CanvasProvider = ({
   const [themeID, setThemeID] = useState<string>(
     initialThemeID || THEME_LIST[0].id
   );
-  const [frames, setFrames] = useState<FrameProps[]>([]);
+  const [frames, setFrames] = useState<FrameProps[]>(initialFrames);
   const [selectedFrameId, setSelectedFrameId] = useState<string | null>(null);
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatusProp>("idle");
 
