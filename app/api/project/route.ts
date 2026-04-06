@@ -59,6 +59,7 @@ export async function POST(request: Request) {
 
     //? Inngest trigger
     try {
+      const runId = project.id
       await inngest.send({
         name: "ui/generate.screen",
 
@@ -66,6 +67,7 @@ export async function POST(request: Request) {
           userId: userId,
           projectId: project.id,
           prompt,
+          runId
         },
       });
     } catch (error) {

@@ -10,10 +10,10 @@ export const unsplashTool = tool({
     execute: async ({ query, orientation }) => {
         try {
             const res = await fetch(
-                `https://api.unsplash.com/photos/?query=${encodeURIComponent(query)}&orientation=${orientation}&per_page=1&client_id=${process.env.UNSPLASH_API_ACCESS_KEY}`
+                `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&orientation=${orientation}&per_page=1&client_id=${process.env.UNSPLASH_API_ACCESS_KEY}`
             )
-            const { result } = await res.json();
-            return result?.[0]?.urls?.regular || ""
+            const { results } = await res.json();
+            return results?.[0]?.urls?.regular || ""
         } catch {
             return ""
         }

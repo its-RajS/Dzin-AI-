@@ -12,7 +12,7 @@ const Page = () => {
   const id = (params?.id as string) || "";
 
   const {
-    data: project, 
+    data: project,
     isLoading: projectLoading,
     isError: projectError,
   } = useGetProjectById(id);
@@ -34,6 +34,7 @@ const Page = () => {
         initialThemeID={themeID}
         hasInitialFrame={hasInitialFrame}
         projectId={project?.id || ""}
+        runId={project?.id || ""}
       >
         <div className="flex overflow-hidden flex-1">
           <div className="relative flex-1">
