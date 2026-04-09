@@ -419,7 +419,9 @@ const Canvas = ({
 
   const currentStatus = isPending
     ? "fetching"
-    : loadingStatus !== "idle" && loadingStatus !== "complete" ? "generating" : "idle";
+    : loadingStatus;
+
+  const showLoader = currentStatus !== "idle";
 
   const [toolMode, setToolMode] = useState<ToolModeType>(
     TOOL_HAND_ENUM.SELECT
@@ -439,7 +441,7 @@ const Canvas = ({
         <FloatingToolBar />
 
         {/* Status Loader */}
-        {currentStatus && (
+        {showLoader && (
           <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
             <CanvasLoader status={currentStatus} />
           </div>

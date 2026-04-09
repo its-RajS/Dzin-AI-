@@ -201,14 +201,14 @@ export const generateUIScreen = inngest.createFunction(
                     html: finalHTML,
                 },
             });
-            //* realtime inngest update
-            await step.realtime.publish("complete", ch.status, {
-                status: "complete",
-                message: "All screens generated",
-                projectId,
-            });
-
         }
+
+        //* realtime inngest update — after ALL screens are done
+        await step.realtime.publish("complete", ch.status, {
+            status: "complete",
+            message: "All screens generated",
+            projectId,
+        });
         // await Promise.all(
         //     analysis.screens.map((screen, i) =>
         //         step.run(`generate-screen-${i}`, async () => {

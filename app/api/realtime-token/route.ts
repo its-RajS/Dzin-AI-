@@ -1,4 +1,5 @@
 import { inngest } from "@/inngest/client";
+import { pipelineChannel } from "@/inngest/channel";
 import { getClientSubscriptionToken } from "inngest/react";
 import { NextResponse } from "next/server";
 
@@ -11,9 +12,9 @@ export async function GET(req: Request) {
     }
 
     const token = await getClientSubscriptionToken(inngest, {
-        channel: `pipeline:${runId}`,
+        channel: pipelineChannel({ runId }),
         topics: ["status", "screens", "tokens"],
     });
 
-    return new Response(token.apiBaseUrl);
+    return NextResponse.json(token);
 }

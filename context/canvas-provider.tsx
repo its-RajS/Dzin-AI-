@@ -65,7 +65,7 @@ const CanvasProvider = ({
     token: () => {
       if (!isValidProject) return Promise.resolve("");
       return fetch(`/api/realtime-token?runId=${projectId}`)
-        .then((r) => r.text())
+        .then((r) => r.json())
     }
   });
 
@@ -78,18 +78,21 @@ const CanvasProvider = ({
     // ✅ STATUS
     if (latest.topic === "status") {
       const data = latest.data as {
-        status?: any;
+        status?: LoadingStatusProp;
         message?: string;
         screen?: number;
         totalScreens?: number;
         projectId?: string;
       };
 
-      setLoadingStatus(data.status || "idle");
+      const newStatus = data.status || "idle";
+      setLoadingStatus(newStatus);
 
-      // Optional: progress-based UI
-      if (data.status === "complete") {
-        setLoadingStatus("complete");
+      // Auto-reset to idle after completion
+      if (newStatus === "complete") {
+        setTimeout(() => {
+          setLoadingStatus("idle");
+        }, 2000);
       }
     }
 
