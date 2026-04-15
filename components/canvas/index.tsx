@@ -504,15 +504,17 @@ const Canvas = ({
                   >
                     <div>
                       {frames?.map((frame, index) => {
-                        const baseX = 1000 + index * 100
+                        const FRAME_WIDTH = 430
+                        const FRAME_GAP = 60
+                        const baseX = 1000 + index * (FRAME_WIDTH + FRAME_GAP)
                         const y = 100
 
                         if (frame.iLoading) {
                           return (
                             <DeviceFrameSkeleton
-                              key={index}
+                              key={frame.id}
                               style={{
-                                transform: `translate(${baseX}px 100px)`
+                                transform: `translate(${baseX}px, ${y}px)`
                               }}
                             />
                           )

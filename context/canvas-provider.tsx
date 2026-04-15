@@ -11,6 +11,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 
@@ -37,6 +38,7 @@ const CanvasProvider = ({
   const [frames, setFrames] = useState<FrameProps[]>(initialFrames);
   const [selectedFrameId, setSelectedFrameId] = useState<string | null>(null);
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatusProp>("idle");
+  const skeletonsAddedRef = useRef(false);
 
   const theme = THEME_LIST.find((theme) => theme.id === themeID);
   const selectedFrame =
@@ -88,8 +90,36 @@ const CanvasProvider = ({
       const newStatus = data.status || "idle";
       setLoadingStatus(newStatus);
 
-      // Auto-reset to idle after completion
+      // Reset skeleton tracker on a new run
+      if (newStatus === "running") {
+        skeletonsAddedRef.current = false;
+      }
+
+      // Add skeleton placeholder frames when generation begins
+      if (
+        newStatus === "generating" &&
+        data.totalScreens &&
+        !skeletonsAddedRef.current
+      ) {
+        skeletonsAddedRef.current = true;
+        const skeletons: FrameProps[] = Array.from(
+          { length: data.totalScreens },
+          (_, i) => ({
+            id: `skeleton-${Date.now() + i}-${i}`,
+            projectId: data.projectId || projectId,
+            title: `Screen ${i + 1}`,
+            htmlContent: "",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            iLoading: true,
+          })
+        );
+        setFrames((prev) => [...prev, ...skeletons]);
+      }
+
+      // Auto-reset to idle after completion and clean up leftover skeletons
       if (newStatus === "complete") {
+        setFrames((prev) => prev.filter((f) => !f.iLoading));
         setTimeout(() => {
           setLoadingStatus("idle");
         }, 2000);
@@ -118,7 +148,16 @@ const CanvasProvider = ({
         updatedAt: new Date(),
       };
 
-      setFrames((prev) => [...prev, newFrame]);
+      setFrames((prev) => {
+        // Replace the first skeleton placeholder if one exists
+        const skeletonIdx = prev.findIndex((f) => f.iLoading === true);
+        if (skeletonIdx !== -1) {
+          const updated = [...prev];
+          updated[skeletonIdx] = newFrame;
+          return updated;
+        }
+        return [...prev, newFrame];
+      });
     }
 
     // ✅ TOKENS (optional)

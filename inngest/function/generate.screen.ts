@@ -204,6 +204,12 @@ export const generateUIScreen = inngest.createFunction(
         }
 
         //* realtime inngest update — after ALL screens are done
+        await step.realtime.publish("finalizing", ch.status, {
+            status: "finalizing",
+            message: "Finalizing screens",
+            projectId,
+        });
+
         await step.realtime.publish("complete", ch.status, {
             status: "complete",
             message: "All screens generated",
