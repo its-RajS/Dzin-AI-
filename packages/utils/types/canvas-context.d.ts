@@ -23,4 +23,5 @@ export type LoadingStatusProp =
   | "running"
   | "analyzing"
   | "generating"
+  | "finalizing"
   | "complete";

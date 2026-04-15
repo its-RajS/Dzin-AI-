@@ -9,7 +9,7 @@ export const pipelineChannel = realtime.channel({
         // 🔹 Progress / state
         status: {
             schema: z.object({
-                status: z.enum(["idle", "running", "analyzing", "generating", "complete"]),
+                status: z.enum(["idle", "running", "analyzing", "generating", "finalizing", "complete"]),
                 message: z.string().optional(),
                 screen: z.number().optional(),
                 totalScreens: z.number().optional(),

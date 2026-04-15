@@ -67,8 +67,8 @@ const DeviceFrame = ({
   return (
     <Rnd
     default={{
-        x: 0,
-        y:0, 
+        x: initialPostion.x,
+        y: initialPostion.y,
         width: width,
         height: frameSize.height
     }}
